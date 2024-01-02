@@ -8,15 +8,17 @@ class RefreshDatabase(val context: Context, workerParams: WorkerParameters) : Wo
     workerParams
 ) {
     override fun doWork(): Result {
-        refreshDatabase()
+        val getData = inputData
+        val myNumber = getData.getInt("intKey",0)
+        refreshDatabase(myNumber)
         return Result.success()
     }
 
-    private fun refreshDatabase(){
+    private fun refreshDatabase(myNumber : Int){
         val sharedPreferences = context.getSharedPreferences("com.bengisusahin.workmanagerk",Context.MODE_PRIVATE)
         var mySavedNumber = sharedPreferences.getInt("myNumber",0)
-        mySavedNumber = mySavedNumber + 1
+        mySavedNumber = mySavedNumber + myNumber
         println(mySavedNumber)
-        sharedPreferences.edit().putInt("myNumber",mySavedNumber)
+        sharedPreferences.edit().putInt("myNumber",mySavedNumber).apply()
     }
 }
